@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Maze
+{
+    public partial class Maze : Form
+    {
+        public Maze()
+        {
+            InitializeComponent();
+            MoveToStart();
+        }
+
+        private void finishLabel_MouseEnter(object sender, EventArgs e)
+        {
+            MessageBox.Show("Congratulations!");
+            Close();
+        }
+
+       /// Move the pointer to a point 10 pixels down and to the right
+       /// of the starting point in the upper-left corner of the maze.
+        private void MoveToStart()
+        {
+            Point startingPoint = panel1.Location;
+            startingPoint.Offset(10, 10);
+            Cursor.Position = PointToScreen(startingPoint);
+        }
+
+        private void wall_MouseEnter(object sender, EventArgs e)
+        {
+            MoveToStart();
+        }
+    }
+}

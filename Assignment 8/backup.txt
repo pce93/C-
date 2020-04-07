@@ -1,0 +1,249 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Assignment8
+{
+    class Program
+    {
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        static void Main(string[] args)
+        {
+            Tree unOrdered = new Tree();
+            Tree Ordered = new Tree();
+            string[] booklist1 = new string[500];
+            string[] booklist2 = new string[500];
+            string bookname;
+            for (int i =0; i < 500; i++)
+            {
+                bookname = RandomString(10);
+                booklist1[i] = bookname;
+                Book a = new Book(bookname, "Oliver", "John", 1989);
+                unOrdered.addBook(a);
+            }
+            for (int i = 0; i < 500; i++)
+            {
+                bookname = RandomString(10);
+                booklist2[i] = bookname;
+                Book b = new Book(RandomString(10), "Oliver", "John", 1989);
+                Ordered.orderedBook(b);
+            }
+
+
+            /*unOrdered.FindU(booklist1[4]);
+            unOrdered.display();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Ordered.display();*/
+           
+        }
+    }
+    class Node
+    {
+        private Book data;
+        private Node left;
+        private Node right;
+        public Book Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
+        public Node Left
+        {
+            get { return left; }
+            set { left = value; }
+        }
+        public Node Right
+        {
+            get { return right; }
+            set { right = value; }
+        }
+        public Node(Book d)
+        {
+            data = d;
+            left = null;
+            right = null;
+        }
+        /*public bool FindByTitleU(string bookname, Node r)
+        {
+            if (r.data.Title == bookname)
+            {
+                return true;
+            }
+            if (r.left != null)
+            {
+                return FindByTitleU(bookname, r.left);
+            }
+            if (r.right != null)
+            {
+                return FindByTitleU(bookname, r.right);
+            }
+            return false;
+
+        }*/
+
+        public bool FindByTitle(string bookname, Node r)
+        {
+            if (r.data.Title == bookname)
+                return true;
+            else if (r.data.Title < bookname)
+            {
+
+            }
+        }
+                 
+        public void addNode(ref Node node, Book book)
+        {
+            if (node == null)
+            {
+                node = new Node(book);
+
+            }
+            else
+                addNode(ref node.left, book);
+        }
+        public void orderedNode(ref Node node, Book book)
+        {
+            if (node == null)
+            {
+                node = new Node(book);
+
+            }
+
+            if (node.data.Title[0] != book.Title[0])
+            {
+                if (node.data.Title[0] < book.Title[0])
+                {
+                    orderedNode(ref node.right, book);
+                }
+
+                if (node.data.Title[0] > book.Title[0])
+                {
+                    orderedNode(ref node.left, book);
+                }
+            }
+            else
+            {
+                if (node.data.Title[1] < book.Title[1])
+                {
+                    orderedNode(ref node.right, book);
+                }
+
+                if (node.data.Title[1] > book.Title[1])
+                {
+                    orderedNode(ref node.left, book);
+                }
+            }
+        }
+        public void display(Node n)
+        {
+            if (n == null)
+                return;
+
+            display(n.left);
+            Console.WriteLine(n.data.Title);
+            display(n.right);
+        }
+    }
+    class Book
+    {
+        public Book(string t, string l, string f, int y)
+        {
+            title = t;
+            lastName = l;
+            firstName = f;
+            year = y;
+        }
+        private string title;
+        private string lastName;
+        private string firstName;
+        private int year;
+
+        public string Title
+        {
+            get { return title; }
+            set { title = value; }
+        }
+        public string LastName
+        {
+            get { return lastName; }
+            set { lastName = value; }
+        }
+
+        public string FirstName
+        {
+            get { return firstName; }
+            set { firstName = value; }
+        }
+
+        public int Year
+        {
+            get { return year; }
+            set { year = value; }
+        }
+
+    }
+
+    class Tree
+    {
+        public Node root;
+        public Tree()
+        {
+            root = null;
+        }
+        public bool isEmpty()
+        {
+            return root == null;
+        }
+        /*public string FindU(string s)
+        {
+            if (root.FindByTitleU(s, root) == true)
+                return s;
+            else
+                return "Not found";
+        }*/
+        public void addBook(Book y)
+        {
+            if (isEmpty())
+            {
+                root = new Node(y);
+            }
+            else
+            {
+                root.addNode(ref root, y);
+            }
+
+
+        }
+        public void orderedBook(Book y)
+        {
+            if (isEmpty())
+            {
+                root = new Node(y);
+            }
+            else
+            {
+                root.orderedNode(ref root, y);
+            }
+
+
+        }
+        public void display()
+        {
+            if (!isEmpty())
+                root.display(root);
+        }
+    }
+
+
+    
+}
